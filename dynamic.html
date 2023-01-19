@@ -1,0 +1,128 @@
+<script>
+    $(document).ready(function () {
+        var dynamicYields = [0.05, 0.09, 0.07, 0.05, 0.07];
+        console.log(dynamicYields.length);
+
+        var dynamicPercentages = [15, 30, 15, 10, 30];
+
+        const formatter = new Intl.NumberFormat('de-DE', {
+            style: 'currency',
+            currency: 'EUR'
+        });
+
+        // Resetting all values
+        for (var i = 0; i < dynamicYields.length; i++) {
+            $('.ligne' + (i + 2) + ' .colonne3 #AssuVie_30ans').text(0);
+            $('.ligne' + (i + 2) + ' .colonne4 #AssuVie_30ans').text(0);
+            $('.ligne' + (i + 2) + ' .colonne5 #AssuVie_30ans').text(0);
+            $('.tableau .ligne' + (i + 2) + ' .colonne2 #AssuVie_30ans').text(parseInt(dynamicYields[i] * 100) + " %");
+            $('.total.ligne6 .colonne2 #AssuVie_30ans').text('7,10 %');
+
+            // For mobile
+            $('.tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(0);
+            $('.capitol-total').text(0);
+            $('.tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .rendement .h5-mobile.scale300').text(parseInt(dynamicYields[i] * 100) + " %");
+            $('.rendement-total').text('7,10 %');
+        }
+
+
+        // ************************************************************************************************************
+        // ************************************************************************************************************
+        // When discover button is clicked
+        $('#discover').click(function (e) {
+            e.preventDefault();
+            // Assigning values to variables
+            var initAmount = $('#apport-initial').val();
+            if (initAmount == "") {
+                initAmount = 0;
+                $('#apport-initial').val(0);
+            }
+            var monthlyAmount = $('#apport-mensuel').val();
+            if (monthlyAmount == "") {
+                monthlyAmount = 0;
+                $('#apport-mensuel').val(0);
+            }
+            console.log(initAmount + ", " + monthlyAmount);
+
+
+            // Create a function for the mathematical formula
+            function calculateValues(yield, percentage, noOfYears) {
+                return (initAmount * (percentage / 100) * (((1 + (yield / 12)) ** (noOfYears * 12))) + (monthlyAmount * (percentage / 100) * (((1 + (yield / 12)) ** (noOfYears * 12) - 1)) / (yield / 12))).toFixed(2);
+                // return ((initAmount * ((1 + (yield/12)) ** (noOfYears*12))) + ((monthlyAmount * (((((1 + (yield/12)) ** (noOfYears*12))) - 1)) / (yield/12)))).toFixed(2);
+                // var addToYield = 1 + (yield/12);
+                // console.log("addToYielf: " + addToYield);
+                // var multipleByTwelve = noOfYears * 12;
+                // console.log("MultiplyByTwelve: " + multipleByTwelve);
+                // var raisedToPower = addToYield**multipleByTwelve;
+                // console.log("rasiedToPower: " + raisedToPower);
+                // var leftSide = initAmount * raisedToPower;
+                // return leftSide;
+            }
+
+            console.log(formatter.format(calculateValues(0.05, 15, 10)));
+
+            // For 10 years
+            var total = 0;
+            for (var i = 0; i < dynamicYields.length; i++) {
+                var capitol = calculateValues(dynamicYields[i], dynamicPercentages[i], 10);
+                total = total + parseFloat(capitol);
+                // console.log(total);
+                var formattedCapitol = formatter.format(capitol);
+
+                // Writing values for Desktop
+                $('.tableau .ligne' + (i + 2) + ' .colonne3 #AssuVie_30ans').text(formattedCapitol);
+
+                // Writing vlaues for mobile
+                $('[data-w-tab="Tab 1"] .tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(formattedCapitol);
+            }
+
+            total = total.toFixed(2);
+            var formattedTotal = formatter.format(total);
+            $('.total.ligne6 .colonne3 #AssuVie_30ans').text(formattedTotal);
+            $('[data-w-tab="Tab 1"] .capitol-total').text(formattedTotal);
+
+
+            // For 20 years
+            var total = 0;
+            for (var i = 0; i < dynamicYields.length; i++) {
+                var capitol = calculateValues(dynamicYields[i], dynamicPercentages[i], 20);
+                total = total + parseFloat(capitol);
+                // console.log(total);
+                var formattedCapitol = formatter.format(capitol);
+
+                // Writing values for Desktop
+                $('.tableau .ligne' + (i + 2) + ' .colonne4 #AssuVie_30ans').text(formattedCapitol);
+
+                // Writing vlaues for mobile
+                $('[data-w-tab="Tab 2"] .tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(formattedCapitol);
+            }
+
+            total = total.toFixed(2);
+            var formattedTotal = formatter.format(total);
+            $('.total.ligne6 .colonne4 #AssuVie_30ans').text(formattedTotal);
+            $('[data-w-tab="Tab 2"] .capitol-total').text(formattedTotal);
+
+            // For 30 years
+            var total = 0; //resetting variable 'total'
+            for (var i = 0; i < dynamicYields.length; i++) {
+                var capitol = calculateValues(dynamicYields[i], dynamicPercentages[i], 30);
+                total = total + parseFloat(capitol);
+                // console.log(total);
+                var formattedCapitol = formatter.format(capitol);
+
+                // Writing values for Desktop
+                $('.tableau .ligne' + (i + 2) + ' .colonne5 #AssuVie_30ans').text(formattedCapitol);
+
+                // Writing vlaues for mobile
+                $('[data-w-tab="Tab 3"] .tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(formattedCapitol);
+            }
+
+            total = total.toFixed(2);
+            var formattedTotal = formatter.format(total);
+            $('.total.ligne6 .colonne5 #AssuVie_30ans').text(formattedTotal);
+            $('[data-w-tab="Tab 3"] .capitol-total').text(formattedTotal);
+
+            $('#total-gain').text(formatter.format(calculateValues(0.02, 100, 20)));
+        })
+    })
+</script>
