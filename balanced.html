@@ -5,6 +5,12 @@
 
         var balancedPercentages = [20, 30, 15, 15, 20];
 
+        // To format the currency properly
+        const formatter = new Intl.NumberFormat('de-DE', {
+            style: 'currency',
+            currency: 'EUR'
+        });
+
         // Resetting all values
         for (var i = 0; i < balancedYields.length; i++) {
             $('.ligne' + (i + 2) + ' .colonne3 #AssuVie_30ans').text(0);
@@ -26,14 +32,23 @@
         // When discover button is clicked
         $('#discover').click(function (e) {
             e.preventDefault();
+
             // Assigning values to variables
             var initAmount = $('#apport-initial').val();
+            if (initAmount == "") {
+                initAmount = 0; // Set value equal to zero if the value is empty
+                $('#apport-initial').val(0);
+            }
             var monthlyAmount = $('#apport-mensuel').val();
+            if (monthlyAmount == "") {
+                monthlyAmount = 0; // Set value equal to zero if the value is empty
+                $('#apport-mensuel').val(0);
+            }
             console.log(initAmount + ", " + monthlyAmount);
 
             // Create a function for the mathematical formula
             function calculateValues(yield, percentage, noOfYears) {
-                return (initAmount*(percentage/100)*(((1+(yield/12))**(noOfYears*12)))+(monthlyAmount*(percentage/100)*(((1+(yield/12))**(noOfYears*12)-1))/(yield/12))).toFixed(2);
+                return (initAmount * (percentage / 100) * (((1 + (yield / 12)) ** (noOfYears * 12))) + (monthlyAmount * (percentage / 100) * (((1 + (yield / 12)) ** (noOfYears * 12) - 1)) / (yield / 12))).toFixed(2);
                 // return ((initAmount * ((1 + (yield/12)) ** (noOfYears*12))) + ((monthlyAmount * (((((1 + (yield/12)) ** (noOfYears*12))) - 1)) / (yield/12)))).toFixed(2);
                 // var addToYield = 1 + (yield/12);
                 // console.log("addToYielf: " + addToYield);
@@ -45,59 +60,68 @@
                 // return leftSide;
             }
 
-            console.log(calculateValues(0.05, 15, 10));
+            // console.log(calculateValues(0.05, 15, 10));
 
             // For 10 years
-            for (var i = 0; i < balancedYields.length; i++) {
-                $('.tableau .ligne' + (i + 2) + ' .colonne3 #AssuVie_30ans').text(calculateValues(balancedYields[i], balancedPercentages[i], 10));
-
-                // For mobile
-                $('[data-w-tab="Tab 1"] .tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(calculateValues(balancedYields[i], balancedPercentages[i], 10));
-            }
-
-            // Total for 10 years
             var total = 0;
             for (var i = 0; i < balancedYields.length; i++) {
-                var lineValue = $('.tableau .ligne' + (i + 2) + ' .colonne3 #AssuVie_30ans').text();
-                total += parseFloat(lineValue);
+                var capitol = calculateValues(balancedYields[i], balancedPercentages[i], 10);
+                total = total + parseFloat(capitol);
+                // console.log(total);
+                var formattedCapitol = formatter.format(capitol);
+
+                // Writing values for Desktop
+                $('.tableau .ligne' + (i + 2) + ' .colonne3 #AssuVie_30ans').text(formattedCapitol);
+
+                // Writing vlaues for mobile
+                $('[data-w-tab="Tab 1"] .tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(formattedCapitol);
             }
-            $('.total.ligne6 .colonne3 #AssuVie_30ans').text(total.toFixed(2));
-            $('[data-w-tab="Tab 1"] .capitol-total').text(total.toFixed(2));
+
+            total = total.toFixed(2);
+            var formattedTotal = formatter.format(total);
+            $('.total.ligne6 .colonne3 #AssuVie_30ans').text(formattedTotal);
+            $('[data-w-tab="Tab 1"] .capitol-total').text(formattedTotal);
 
 
             // For 20 years
+            var total = 0; //resetting variable 'total'
             for (var i = 0; i < balancedYields.length; i++) {
-                $('.tableau .ligne' + (i + 2) + ' .colonne4 #AssuVie_30ans').text(calculateValues(balancedYields[i], balancedPercentages[i], 20));
+                var capitol = calculateValues(balancedYields[i], balancedPercentages[i], 20);
+                total = total + parseFloat(capitol);
+                // console.log(total);
+                var formattedCapitol = formatter.format(capitol);
 
-                // For mobile
-                $('[data-w-tab="Tab 2"] .tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(calculateValues(balancedYields[i], balancedPercentages[i], 20));
+                // Writing values for Desktop
+                $('.tableau .ligne' + (i + 2) + ' .colonne4 #AssuVie_30ans').text(formattedCapitol);
+
+                // Writing vlaues for mobile
+                $('[data-w-tab="Tab 2"] .tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(formattedCapitol);
             }
 
-            // Total for 20 years
-            var total = 0;
-            for (var i = 0; i < balancedYields.length; i++) {
-                var lineValue = $('.tableau .ligne' + (i + 2) + ' .colonne4 #AssuVie_30ans').text();
-                total += parseFloat(lineValue);
-            }
-            $('.total.ligne6 .colonne4 #AssuVie_30ans').text(total.toFixed(2));
-            $('[data-w-tab="Tab 2"] .capitol-total').text(total.toFixed(2));
+            total = total.toFixed(2);
+            var formattedTotal = formatter.format(total);
+            $('.total.ligne6 .colonne4 #AssuVie_30ans').text(formattedTotal);
+            $('[data-w-tab="Tab 2"] .capitol-total').text(formattedTotal);
 
-            // For 30 years
+            // For 30 
+            var total = 0; //resetting variable 'total'
             for (var i = 0; i < balancedYields.length; i++) {
-                $('.tableau .ligne' + (i + 2) + ' .colonne5 #AssuVie_30ans').text(calculateValues(balancedYields[i], balancedPercentages[i], 30));
+                var capitol = calculateValues(balancedYields[i], balancedPercentages[i], 30);
+                total = total + parseFloat(capitol);
+                // console.log(total);
+                var formattedCapitol = formatter.format(capitol);
 
-                // For mobile
-                $('[data-w-tab="Tab 3"] .tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(calculateValues(balancedYields[i], balancedPercentages[i], 30));
+                // Writing values for Desktop
+                $('.tableau .ligne' + (i + 2) + ' .colonne5 #AssuVie_30ans').text(formattedCapitol);
+
+                // Writing vlaues for mobile
+                $('[data-w-tab="Tab 3"] .tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .capital .h5-mobile.scale300').text(formattedCapitol);
             }
 
-            // Total for 20 years
-            var total = 0;
-            for (var i = 0; i < balancedYields.length; i++) {
-                var lineValue = $('.tableau .ligne' + (i + 2) + ' .colonne5 #AssuVie_30ans').text();
-                total += parseFloat(lineValue);
-            }
-            $('.total.ligne6 .colonne5 #AssuVie_30ans').text(total.toFixed(2));
-            $('[data-w-tab="Tab 3"] .capitol-total').text(total.toFixed(2));
+            total = total.toFixed(2);
+            var formattedTotal = formatter.format(total);
+            $('.total.ligne6 .colonne5 #AssuVie_30ans').text(formattedTotal);
+            $('[data-w-tab="Tab 3"] .capitol-total').text(formattedTotal);
 
             $('#total-gain').text(calculateValues(0.02, 100, 20));
         })

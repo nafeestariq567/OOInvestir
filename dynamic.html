@@ -5,6 +5,7 @@
 
         var dynamicPercentages = [15, 30, 15, 10, 30];
 
+        // To format the currency properly
         const formatter = new Intl.NumberFormat('de-DE', {
             style: 'currency',
             currency: 'EUR'
@@ -34,12 +35,12 @@
             // Assigning values to variables
             var initAmount = $('#apport-initial').val();
             if (initAmount == "") {
-                initAmount = 0;
-                $('#apport-initial').val(0);
+                initAmount = 0; // Set value equal to zero if the value is empty
+                $('#apport-initial').val(0); 
             }
             var monthlyAmount = $('#apport-mensuel').val();
             if (monthlyAmount == "") {
-                monthlyAmount = 0;
+                monthlyAmount = 0; // Set value equal to zero if the value is empty
                 $('#apport-mensuel').val(0);
             }
             console.log(initAmount + ", " + monthlyAmount);
@@ -83,7 +84,7 @@
 
 
             // For 20 years
-            var total = 0;
+            var total = 0; //resetting variable 'total'
             for (var i = 0; i < dynamicYields.length; i++) {
                 var capitol = calculateValues(dynamicYields[i], dynamicPercentages[i], 20);
                 total = total + parseFloat(capitol);
