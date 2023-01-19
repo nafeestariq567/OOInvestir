@@ -6,6 +6,7 @@
         var dynamicPercentages = [15, 30, 15, 10, 30];
 
         const rendementTotal = 7.10;
+        console.log('rendement Total: ' + rendementTotal);
 
         // To format the currency properly
         const formatter = new Intl.NumberFormat('de-DE', {
@@ -86,7 +87,7 @@
             $('[data-w-tab="Tab 1"] .capitol-total').text(formattedTotal);
 
             // Monthly Interest Generated (for tablet and mobile)
-            var monthlyInterest = total * rendementTotal / 12;
+            var monthlyInterest = total * (rendementTotal / 100) / 12;
             monthlyInterest = monthlyInterest.toFixed(2);
             var formattedMonthlyInterest = formatter.format(monthlyInterest);
             $('[data-w-tab="Tab 1"] .monthly-interest').text(formattedMonthlyInterest);
@@ -113,7 +114,7 @@
             $('[data-w-tab="Tab 2"] .capitol-total').text(formattedTotal);
 
             // Monthly Interest Generated (for tablet and mobile)
-            var monthlyInterest = total * rendementTotal / 12;
+            var monthlyInterest = total * (rendementTotal / 100) / 12;
             monthlyInterest = monthlyInterest.toFixed(2);
             var formattedMonthlyInterest = formatter.format(monthlyInterest);
             $('[data-w-tab="Tab 2"] .monthly-interest').text(formattedMonthlyInterest);
