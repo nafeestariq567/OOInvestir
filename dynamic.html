@@ -5,6 +5,8 @@
 
         var dynamicPercentages = [15, 30, 15, 10, 30];
 
+        const rendementTotal = 7.10;
+
         // To format the currency properly
         const formatter = new Intl.NumberFormat('de-DE', {
             style: 'currency',
@@ -24,6 +26,7 @@
             $('.capitol-total').text(0);
             $('.tableau-simulateur-mobile-div .carte-responsive:nth-child(' + (i + 1) + ') .rendement .h5-mobile.scale300').text(parseInt(dynamicYields[i] * 100) + " %");
             $('.rendement-total').text('7,10 %');
+            $('.monthly-interest').text(0);
         }
 
 
@@ -82,6 +85,12 @@
             $('.total.ligne6 .colonne3 #AssuVie_30ans').text(formattedTotal);
             $('[data-w-tab="Tab 1"] .capitol-total').text(formattedTotal);
 
+            // Monthly Interest Generated (for tablet and mobile)
+            var monthlyInterest = total * rendementTotal / 12;
+            monthlyInterest = monthlyInterest.toFixed(2);
+            var formattedMonthlyInterest = formatter.format(monthlyInterest);
+            $('[data-w-tab="Tab 1"] .monthly-interest').text(formattedMonthlyInterest);
+
 
             // For 20 years
             var total = 0; //resetting variable 'total'
@@ -103,6 +112,12 @@
             $('.total.ligne6 .colonne4 #AssuVie_30ans').text(formattedTotal);
             $('[data-w-tab="Tab 2"] .capitol-total').text(formattedTotal);
 
+            // Monthly Interest Generated (for tablet and mobile)
+            var monthlyInterest = total * rendementTotal / 12;
+            monthlyInterest = monthlyInterest.toFixed(2);
+            var formattedMonthlyInterest = formatter.format(monthlyInterest);
+            $('[data-w-tab="Tab 2"] .monthly-interest').text(formattedMonthlyInterest);
+
             // For 30 years
             var total = 0; //resetting variable 'total'
             for (var i = 0; i < dynamicYields.length; i++) {
@@ -123,6 +138,13 @@
             $('.total.ligne6 .colonne5 #AssuVie_30ans').text(formattedTotal);
             $('[data-w-tab="Tab 3"] .capitol-total').text(formattedTotal);
 
+            // Monthly Interest Generated (for tablet and mobile)
+            var monthlyInterest = total * rendementTotal / 12;
+            monthlyInterest = monthlyInterest.toFixed(2);
+            var formattedMonthlyInterest = formatter.format(monthlyInterest);
+            $('[data-w-tab="Tab 3"] .monthly-interest').text(formattedMonthlyInterest);
+
+            // Total gain value at the bottom of the table
             $('#total-gain').text(formatter.format(calculateValues(0.02, 100, 20)));
         })
     })
