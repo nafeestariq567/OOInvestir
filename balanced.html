@@ -139,13 +139,13 @@
             $('[data-w-tab="Tab 3"] .capitol-total').text(formattedTotal);
 
             // Monthly Interest Generated (for tablet and mobile)
-            var monthlyInterest = total * rendementTotal / 12;
+            var monthlyInterest = total * (rendementTotal / 100) / 12;
             monthlyInterest = monthlyInterest.toFixed(2);
             var formattedMonthlyInterest = formatter.format(monthlyInterest);
             $('[data-w-tab="Tab 3"] .monthly-interest').text(formattedMonthlyInterest);
 
             // Total gain value at the bottom of the table
-            $('#total-gain').text(formatter.format(calculateValues(0.02, 100, 20)));
+            $('.total-gain').text(formatter.format(calculateValues(0.02, 100, 20)));
         })
     })
 </script>
